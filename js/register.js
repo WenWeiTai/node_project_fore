@@ -4,9 +4,13 @@ window.onload = function() {
     pwd: $(".pwd"),
     nickname: $(".nickname"),
     phone: $(".phone"),
+    age: $("input[name=age]"),
+    // sex: $("input[name=sex]"),
+    // isAdmin: $("input[name=isAdmin]"),
     surePwd: $(".surePwd"),
     lookpwd: $(".lookpwd"),
     looksurepwd: $(".looksurepwd"),
+    registerBtn: $(".registerBtn"),
 
     reg_user: /^([\u4e00-\u9fa5]|\w){4,10}$/,
     reg_pwd: /^[a-zA-Z]\w{3,11}$/,
@@ -22,10 +26,13 @@ class RegRegister {
     this.pwd = obj.pwd;
     this.nickname = obj.nickname;
     this.phone = obj.phone;
+    this.age = obj.age;
+    // this.sex = obj.sex;
+    // this.isAdmin = obj.isAdmin;
     this.surePwd = obj.surePwd;
     this.lookpwd = obj.lookpwd;
     this.looksurepwd = obj.looksurepwd;
-
+    this.registerBtn = obj.registerBtn;
     this.reg_user = obj.reg_user;
     this.reg_pwd = obj.reg_pwd;
     this.reg_nickname = obj.reg_nickname;
@@ -41,10 +48,11 @@ class RegRegister {
     this.regNickname();
     this.regPhone();
     this.surePassword(this.surePwd);
-    this.checkSubmit();
+    // this.checkSubmit();
+    this.checkRegisterBtn();
 
-    this.lookPwd(this.lookpwd,this.pwd);
-    this.lookPwd(this.looksurepwd,this.surePwd);
+    this.lookPwd(this.lookpwd, this.pwd);
+    this.lookPwd(this.looksurepwd, this.surePwd);
   }
 
   regUser() {
@@ -88,14 +96,14 @@ class RegRegister {
   }
 
   //查看密码
-  lookPwd(ele,iptName) {
+  lookPwd(ele, iptName) {
     var _this = this;
     ele.click(function() {
-      var type =iptName.attr("type");
+      var type = iptName.attr("type");
       if (type == "password") {
-       iptName.attr("type", "text");
+        iptName.attr("type", "text");
       } else {
-       iptName.attr("type", "password");
+        iptName.attr("type", "password");
       }
     });
   }
@@ -128,19 +136,57 @@ class RegRegister {
   //表单submit验证
   checkSubmit() {
     var _this = this;
-    $("form").submit(function() { 
+    $("form").submit(function() {
       if (
         _this.flag &
-        (_this.user.val() != '') &
-        (_this.pwd.val() != '') &
-        (_this.nickname.val() != '') &
-        (_this.phone.val() != '') &
-        (_this.surePwd.val() != '') & 
+        (_this.user.val() != "") &
+        (_this.pwd.val() != "") &
+        (_this.nickname.val() != "") &
+        (_this.phone.val() != "") &
+        (_this.surePwd.val() != "") &
         (_this.surePwd.val() == _this.pwd.val())
       ) {
         return true;
+        alert(1);
       } else {
         return false;
+      }
+    });
+  }
+
+  //button注册
+  checkRegisterBtn() {
+    var _this = this;
+    this.registerBtn.click(function() {
+      if (
+        _this.flag &
+        (_this.user.val() != "") &
+        (_this.pwd.val() != "") &
+        (_this.nickname.val() != "") &
+        (_this.phone.val() != "") &
+        (_this.surePwd.val() != "") &
+        (_this.surePwd.val() == _this.pwd.val())
+      ) {
+        //注册
+        var params = {
+          username: _this.user.val(),
+          password: _this.pwd.val(),
+          nickname: _this.nickname.val(),
+          phone: _this.phone.val(),
+          age: _this.age.val(),
+          sex: $("input[name=sex]:checked").val(),
+          isAdmin:  $("input[name=isAdmin]:checked").val()
+        };
+        // console.log(params);
+        $.post(
+          "http://localhost:3000/api/register",
+          params,
+          function(res) {
+            console.log(res);
+          }
+        );
+      } else {
+        alert("您输入的信息不完整");
       }
     });
   }
