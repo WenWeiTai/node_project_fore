@@ -1,12 +1,15 @@
-@charset "UTF-8";
+$bdColorArr: (#1b2733, #f4ffff);
+
+// =============================以上公共调用样式
+
 html,
 body {
   height: 100%;
-  color: #f4ffff;
+  color: nth($bdColorArr, 2);
 }
 
 body {
-  background: url("/images/login_bg1.jpg");
+  background: url("../images/login_bg1.jpg");
   display: flex;
 }
 
@@ -23,45 +26,47 @@ body {
   padding: 0;
 }
 
+// =========================头部
 .head {
   height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: url("/images/home_h_bg.jpg");
-}
-.head .logo {
-  color: #f4ffff;
-  font-weight: bold;
-  padding-left: 35px;
-  font-size: 24px;
-  font-family: "微软雅黑";
-}
-.head .logo:hover {
-  color: #eee;
-  text-decoration: none;
-}
-.head .h-right {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-}
-.head .h-right p {
-  color: #f4ffff;
-}
-.head .h-right .btn {
-  margin-left: 10px;
-}
-.head .h-right .btnHide {
-  display: none;
-}
-.head .h-right .btnHide a {
-  color: #fff;
-}
-.head .h-right .btnHide a:hover {
-  text-decoration: none;
+  background: url("../images/home_h_bg.jpg");
+  .logo {
+    color: nth($bdColorArr, 2);
+    font-weight: bold;
+    padding-left: 35px;
+    font-size: 24px;
+    font-family: "微软雅黑";
+    &:hover {
+      color: #eee;
+      text-decoration: none;
+    }
+  }
+  .h-right {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    p {
+      color: nth($bdColorArr, 2);
+    }
+    .btn {
+      margin-left: 10px;
+    }
+    .btnHide {
+      display: none;
+      a {
+        color: #fff;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
 }
 
+// =========================尾部
 .foot {
   height: 50px;
   line-height: 50px;
@@ -69,6 +74,8 @@ body {
   text-align: center;
 }
 
+
+// ==========================主体
 .main {
   flex: 1;
   display: flex;
@@ -80,23 +87,23 @@ body {
   background: #283440;
   width: 250px;
   height: 100%;
-}
-.m-left a {
-  color: #f4ffff;
-  font-size: 18px;
-}
-.m-left a:hover {
-  text-decoration: none;
-  color: #fff;
-  background: #0661a7;
-  display: block;
-  transition: all 0.1s;
-}
-.m-left li {
-  height: 50px;
-  line-height: 50px;
-  border-bottom: 1px solid #1b2733;
-  text-align: center;
+  a {
+    color: nth($bdColorArr, 2);
+    font-size: 18px;
+    &:hover {
+      text-decoration: none;
+      color: #fff;
+      background: #0661a7;
+      display: block;
+      transition: all 0.1s;
+    }
+  }
+  li {
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid nth($bdColorArr, 1);
+    text-align: center;
+  }
 }
 
 .m-right {
@@ -115,9 +122,10 @@ body {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 98;
-  display: none;
+  display: none; // =========================蒙版隐藏
 }
 
+// ==========================================login、register marginAuto
 .marginAutoBox {
   display: flex;
   justify-content: center;
@@ -134,11 +142,11 @@ body {
 
 .marginAuto {
   align-self: center;
-}
-.marginAuto .logo,
-.marginAuto .title {
-  text-align: center;
-  margin: 10px 0;
+  .logo,
+  .title {
+    text-align: center;
+    margin: 10px 0;
+  }
 }
 
 .btn_margin {
@@ -150,32 +158,35 @@ body {
   margin-top: 20px;
   text-decoration: underline;
   color: #0a5ca5;
-}
-.whereGo:hover {
-  color: #f00;
+  &:hover {
+    color: #f00;
+  }
 }
 
 .rgs_title {
   position: relative;
   margin-bottom: 5px;
-}
-.rgs_title i {
-  margin-right: 5px;
+  // font-size: 16px;
+  i {
+    margin-right: 5px;
+  }
 }
 
+// 表格
 .table {
   text-align: center;
-}
-.table th {
-  text-align: center;
-  background: #eee;
-}
-.table .td-del {
-  color: red;
-}
-.table .setSize {
-  width: 100px;
-  height: 100px;
+  th {
+    text-align: center;
+    background: #eee;
+  }
+
+  .td-del {
+    color: red;
+  }
+  .setSize {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 .form-inline {
@@ -193,6 +204,7 @@ body {
   justify-content: flex-end;
 }
 
+// 新增
 .add {
   padding: 20px;
   margin-bottom: 10px;
@@ -209,16 +221,17 @@ body {
   width: 500px;
   height: 60%;
   padding: 30px;
-  border: 1px solid #f4ffff;
+  border: 1px solid nth($bdColorArr, 2);
   background: rgba(255, 255, 255, 0.8);
   border-radius: 5%;
   border-radius: 5%;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-  display: none;
-}
-.addItem_box .title {
-  text-align: center;
-  margin-bottom: 30px;
+  display: none; //=========================增加框隐藏
+
+  .title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
 }
 
 .addItem_box_brand {
@@ -229,11 +242,11 @@ body {
   position: absolute;
   right: 20px;
   bottom: 50px;
-}
-.btns .btn {
-  outline: none;
-  width: 120px;
-  margin-left: 10px;
+  .btn {
+    outline: none;
+    width: 120px;
+    margin-left: 10px;
+  }
 }
 
 .setMargin {
@@ -244,6 +257,7 @@ body {
   padding: 0;
 }
 
+// 手机管理跟品牌管理td的行高设置
 .table > tbody > tr > .setTDLineH {
   line-height: 100px;
 }
@@ -251,3 +265,4 @@ body {
 .table > tbody > tr > .setTDLineH_brand {
   line-height: 53px;
 }
+
