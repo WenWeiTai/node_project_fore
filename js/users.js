@@ -1,7 +1,9 @@
 window.onload = function () {
 	var pagination = $(".pagination");
 	var navFirstLi = $(".pagination").children("li").first("li");
-	var navLastLi = $(".pagination").children("li").last("li");
+	var seachInput = $(".searchInput");
+	var seachBtn = $(".searchBtn");
+
 
 	//发送请求拿到所有数据
 	var pro = new Promise(function (resolve, reject) {
@@ -68,6 +70,13 @@ window.onload = function () {
 			})
 		}
 	)
+
+	//搜索功能
+	seachBtn.click(function(){
+		$.get('http://localhost:3000/api/search',{nickname : seachInput.val()},function(res){
+			writeDate(res)
+		})
+	})
 };
 
 //遍历页面显示数据
@@ -94,3 +103,6 @@ function writeDate(res){
 	}
 	usersDateBox.html(userDatestr);
 }
+
+
+
