@@ -147,7 +147,6 @@ class RegRegister {
         (_this.surePwd.val() == _this.pwd.val())
       ) {
         return true;
-        alert(1);
       } else {
         return false;
       }
@@ -177,12 +176,16 @@ class RegRegister {
           sex: $("input[name=sex]:checked").val(),
           isAdmin:  $("input[name=isAdmin]:checked").val()
         };
-        // console.log(params);
         $.post(
           "http://localhost:3000/api/register",
           params,
           function(res) {
-            console.log(res);
+            if(res.code === 1){
+              alert('注册成功，返回登录页');
+              location.href = '../page/login.html';
+            }else{
+              alert(res.msg);
+            }
           }
         );
       } else {
