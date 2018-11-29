@@ -14,16 +14,7 @@
   <body>
     <div class="container rmPaddin">
       <!-- 头部 -->
-      <div class="head">
-        <a class="logo" href="/">WWT后台管理系统</a>
-        <div class="h-right">
-          <p>欢迎您 - 温维太(管理员)</p>
-          <button class="btn btn-primary iconfont">&#xe618;</button>
-          <button class="btn btn-danger iconfont btnHide">
-            <a href="/login.html">登录</a>
-          </button>
-        </div>
-      </div>
+      <div id="header"></div>
       <!-- 内容 -->
       <div class="main">
         <div class="m-left">
@@ -65,9 +56,9 @@
                     <th>操作</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="usersDateBox">
                   
-                    <tr>
+                    <!-- <tr>
                       <th scope="row">1</th>
                       <td>wenweitai</td>
                       <td>温维太</td>
@@ -82,8 +73,7 @@
                           >删除</a
                         >
                       </td>
-                    </tr>
-                 
+                    </tr> -->
                  
                 </tbody>
               </table>
@@ -91,35 +81,21 @@
             <!-- 分页 -->
             <nav aria-label="Page navigation">
               <ul class="pagination">
-                <!-- <li>
-                  <a
-                    href="/users/?page=<%= page - 1 < 1 ? 1 : page - 1 %>&pageSize=<%= pageSize %>"
-                    aria-label="Previous"
-                  >
+                <li>
+                  <a href="#" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                   </a>
-                </li> -->
-                <!--
-                  后台传递总页数、第几页、页条数
-                  totalPage 总页数：显示几页
-                  page 第几页：高亮 第几页
-                  pageSize 页条数：一页渲染几条数据
-                -->
-                <!-- <% for(var i = 0; i < totalPage; i++){ %>
-                <li class="<%= page == (i + 1) ? 'active' : '' %>">
-                  <a href="/users/?page=<%= i + 1 %>&pageSize=<%= pageSize %>"
-                    ><%= i + 1 %></a
-                  >
                 </li>
-                <% } %>
+                <!-- <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li> -->
                 <li>
-                  <a
-                    href="/users/?page=<%= page + 1 > totalPage ? totalPage : page + 1%>&pageSize=<%= pageSize %>"
-                    aria-label="Next"
-                  >
+                  <a href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                   </a>
-                </li> -->
+                </li>
               </ul>
             </nav>
           </div>
@@ -130,3 +106,8 @@
     </div>
   </body>
 </html>
+<script src="../js/jquery.min.js"></script>
+<script>
+    $('#header').load('common/head.html');
+</script>
+<script src="../js/users.js"></script>
