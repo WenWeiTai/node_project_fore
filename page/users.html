@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script>
+      //判断非管理员用户不能进入管理页
+      var local = localStorage.getItem('isAdmin');
+      if(!JSON.parse(local)){
+        location.href = 'login.html';
+      }
+    </script>
     <link rel="stylesheet" href="../css/bootstrap.min.css" />
     <link rel="stylesheet" href="../css/reset.css" />
     <link rel="stylesheet" href="../css/common.css" />

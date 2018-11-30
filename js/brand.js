@@ -33,7 +33,7 @@ class OperationDate {
 
     getAjax () {
         var _this = this;
-        $.get("http://localhost:3000/api/phoneDate", function (res) {
+        $.get("http://localhost:3000/api/brandDate", function (res) {
             if (res.code == 1) {
                 _this.getUserDate(res);
                 _this.getNavLiData(res);
@@ -47,27 +47,17 @@ class OperationDate {
     getUserDate(res){
         var userDatestr = "";
         this.phoneDate.html('');
-        var _this = this;
         console.log(res)
         for (var i = 0; i < res.data.length; i++) {
             userDatestr += `
-            <tr _id="${res.data[i]._id}">    
-                <th class="setTDLineH" scope="row">${i + 1}</th>
-                <td>
-                    <img
-                    class="setSize"
-                    src="${res.data[i].imgSrc}"
-                    alt="iphoneX"
-                    />
-                </td>
-                <td class="setTDLineH">${res.data[i].model}</td>
-                <td class="setTDLineH">${res.data[i].brand}</td>
-                <td class="setTDLineH">${res.data[i].price}</td>
-                <td class="setTDLineH">${res.data[i].secondHand}</td>
-                <td class="setTDLineH">
+            <tr _id=${res.data[i]._id}>
+                <th class="setTDLineH_brand" scope="row">${i + 1}</th>
+                <td><img src="${res.data[i].imgSrc}" alt="iphone" /></td>
+                <td class="setTDLineH_brand">${res.data[i].brand}</td>
+                <td class="setTDLineH_brand">
                     <a class="td-update" href="##">修改</a>&ensp;&ensp;<a
                     class="td-del"
-                    href="##""
+                    href="##"
                     >删除</a
                     >
                 </td>
@@ -75,27 +65,6 @@ class OperationDate {
             `;
         }
         this.phoneDate.html(userDatestr);
-
-        //修改信息
-        this.phoneDate.on('click','.td-update',function(){
-            //弹出修改窗口
-            $('.masking').fadeIn(300);
-            $('.addItem_box').fadeIn(300).find('h2').html('修改信息');
-            //获取当前点击行的值
-            $('.pName').val($(this).parent().parent().children().eq(2).html());
-            $('.pBrand').val($(this).parent().parent().children().eq(3).html());
-            $('.pPrice').val($(this).parent().parent().children().eq(4).html());
-            $('.pSecondPrice').val($(this).parent().parent().children().eq(5).html());
-            
-            //调用添加数据的方法更新当前数据
-            // _this.addPhone('http://localhost:3000/api/updataPhone','修改信息成功')
-            //点击取消隐藏修改窗口
-            $('.cancelBtn').click(function(){
-                $('.masking').fadeOut(300);
-                $('.addItem_box').fadeOut(300);
-            })
-        })
-        
     }
 
     //删除
@@ -103,8 +72,8 @@ class OperationDate {
         var _this = this;
         this.phoneDate.on('click','.td-del',function(){
             var id = $(this).parent().parent().attr('_id');
-            
-            $.get('http://localhost:3000/api/phoneDelete',{id : id},function(res){
+            console.log(id)
+            $.get('http://localhost:3000/api/brandDelete',{id : id},function(res){
                 console.log(res)
                 if(res.code == 1){
                     _this.getAjax ()
@@ -162,53 +131,43 @@ class OperationDate {
     //分页数据请求
     clickNavAjax(navLiS,clickIndex){
         var _this = this;
-        $.get("http://localhost:3000/api/phoneDate?page="+ clickIndex +"&pageSize=3",function(res){
+        $.get("http://localhost:3000/api/brandDate?page="+ clickIndex +"&pageSize=3",function(res){
             _this.getUserDate(res)
         });
         navLiS.eq(clickIndex).addClass('active').siblings().removeClass('active')
     }
 
-    //添加手机
-    addPhone(url,msg){
-        url = url || 'http://localhost:3000/api/addPhone',
-        msg = msg || '添加手机成功'
+    //添加品牌
+    addPhone(){
         var _this = this;
         $('.sureBtn').click(function(e){
             e.preventDefault();
             //拿到所有值
-            var pNameVal = $('.pName').val();
             var pBrandVal = $('.pBrand').val();
-            var pPriceVal = $('.pPrice').val();
-            var pSecondPriceVal = $('.pSecondPrice').val();
             var pFile = document.getElementById('pFile').files[0];
 
 
-            if(pNameVal && pBrandVal && pPriceVal && pSecondPriceVal && pFile){
+            if(pBrandVal && pFile){
                 var obj = new FormData();
                 obj.append('imgFile',pFile);
-                obj.append('pName',pNameVal);
                 obj.append('pBrand',pBrandVal);
-                obj.append('pPrice',pPriceVal);
-                obj.append('pSecondPrice',pSecondPriceVal);
 
                 $.ajax({
                     type : 'post',
-                    url : url,
+                    url : 'http://localhost:3000/api/addbrand',
                     data : obj,
                     contentType : false,
                     processData : false,
                     success : function(res){
                         if(res.code == 1){
                             $('.cancelBtn').click();
-                            alert(msg);
+                            alert('添加手机成功');
                             _this.getAjax()
                         }
                     }
                 })
-            }else{
-                alert('请输入完整');
             }
-            console.log(pNameVal,pBrandVal,pPriceVal,pSecondPriceVal,pFile)
+            console.log(pBrandVal,pFile)
         })
     }
 }
