@@ -26,7 +26,7 @@ class OperationDate {
     }
 
     getAjax () {
-        if(!this.pagination.val()){
+        if(!this.seachInput.val()){
             // console.log(1)
             var _this = this;
             $.get("http://localhost:3000/api/users", function (res) {
@@ -39,7 +39,7 @@ class OperationDate {
                 }
             });
         }
-        //搜索  =============== 没做分页
+        //搜索
         var _this = this;
         this.seachBtn.click(function(){
             $.get('http://localhost:3000/api/search',{nickname : _this.seachInput.val()},function(res){
@@ -71,7 +71,7 @@ class OperationDate {
         }
         this.usersDateBox.html(userDatestr);
         //渲染时隐藏管理员删除按钮
-        $('.del_hide').hide()
+        $('.del_hide').remove()
         //删除功能
         this.delUser()
     }
