@@ -6,7 +6,9 @@ window.onload = function(){
         usersDateBox : $(".usersDateBox"),
         navFirstLi : $(".pagination").children("li").first("li"),
     }
-    new OperationDate(obj)
+    new OperationDate(obj);
+    
+
 }
 
 class OperationDate {
@@ -62,7 +64,7 @@ class OperationDate {
                 <td>${res.data[i].age}</td>
                 <td>${res.data[i].isAdmin == true ? "是" : "否"}</td>
                 <td>
-                <a class="td-update" href="##">修改</a>&ensp;&ensp;<a class="${res.data[i].isAdmin  ? 'del_hide' : 'td-del'}" href="##">删除</a>
+                <a class="td-update" href="##">修改</a>&ensp;&ensp;<a class="${res.data[i].isAdmin  ? 'del_hide' : 'td-del'}" href="javascript:;">删除</a>
                 </td>
             </tr>
             `;
@@ -77,10 +79,10 @@ class OperationDate {
     //分页渲染
     getNavLiData(res){
         var navLiStr = "";
-        // this.liS =  $('.firstLi').siblings('li').not('.lastLi')
-        // if(this.liS.length > 0){
-        //     this.liS.remove();
-        // }
+        this.liS =  $('.firstLi').siblings('li').not('.lastLi')
+        if(this.liS.length > 0){
+            this.liS.remove();
+        }
 		for (var i = 0; i < res.totalPage; i++) {
             navLiStr += `
             <li class="${0 == i ? "active" : ''}"><a href="#">${i + 1}</a></li>
@@ -123,7 +125,7 @@ class OperationDate {
         $.get("http://localhost:3000/api/users?page="+ clickIndex +"&pageSize=5",function(res){
             _this.getUserDate(res)
         });
-        navLiS.eq(clickIndex).addClass('active').siblings().removeClass()
+        navLiS.eq(clickIndex).addClass('active').siblings().removeClass('active')
     }
 
     //删除
@@ -135,8 +137,8 @@ class OperationDate {
 				if(res.code == 1){
                     // alert(res.msg);
                     //重新渲染数据
-                    // _this.getAjax(); //===================逻辑有问题
-                    location.reload();
+                    _this.getAjax(); 
+                    // location.reload();
 				}else{
 					alert(res.msg);
 				}
