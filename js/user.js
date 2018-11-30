@@ -25,16 +25,26 @@ class OperationDate {
 
     getAjax () {
         if(!this.pagination.val()){
+            // console.log(1)
             var _this = this;
             $.get("http://localhost:3000/api/users", function (res) {
                 if (res.code == 1) {
                     _this.getUserDate(res);
+                   
                     _this.getNavLiData(res);
                 } else {
                     alert(res.msg);
                 }
             });
         }
+        //搜索  =============== 没做分页
+        var _this = this;
+        this.seachBtn.click(function(){
+            $.get('http://localhost:3000/api/search',{nickname : _this.seachInput.val()},function(res){
+                _this.getUserDate(res);
+            })
+        })
+        
     }
     
     //用户数据渲染
@@ -61,18 +71,21 @@ class OperationDate {
         //渲染时隐藏管理员删除按钮
         $('.del_hide').hide()
         //删除功能
-        this. delUser()
+        this.delUser()
     }
 
     //分页渲染
     getNavLiData(res){
         var navLiStr = "";
-        this.navFirstLi.after(navLiStr);
+        // this.liS =  $('.firstLi').siblings('li').not('.lastLi')
+        // if(this.liS.length > 0){
+        //     this.liS.remove();
+        // }
 		for (var i = 0; i < res.totalPage; i++) {
-			navLiStr += `
-			    <li class=${0 == i ? "active" : ""}><a href="#">${i + 1}</a></li>
-			    `
-		}
+            navLiStr += `
+            <li class="${0 == i ? "active" : ''}"><a href="#">${i + 1}</a></li>
+            `
+        }
         this.navFirstLi.after(navLiStr); 
         this.clickNavLi();
     }
@@ -80,7 +93,7 @@ class OperationDate {
     //分页操作
     clickNavLi(){
         //获取渲染后分页(包括前后)的li数量
-		var navLiS = $(".pagination li")
+        var navLiS = $(".pagination li")
 		//保存每次点击的下标
         var clickIndex = 1;
         var _this = this;
@@ -115,13 +128,15 @@ class OperationDate {
 
     //删除
     delUser(){
+        var _this = this;
 		this.usersDateBox.on('click','.td-del',function(){
             var username = $(this).parent().parent().children().eq(1).html();
 			$.get('http://localhost:3000/api/delete',{user : username},function(res){
 				if(res.code == 1){
-                    alert(res.msg);
+                    // alert(res.msg);
                     //重新渲染数据
-					getUserDate(res);
+                    // _this.getAjax(); //===================逻辑有问题
+                    location.reload();
 				}else{
 					alert(res.msg);
 				}
@@ -129,14 +144,3 @@ class OperationDate {
 		})
     }
 }
-
-
-
-/* 
-seachBtn.click(function(){
-    $.get('http://localhost:3000/api/search',{nickname : seachInput.val()},function(res){
-        writeDate(res)
-    })
-})
-
-*/
