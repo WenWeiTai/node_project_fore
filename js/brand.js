@@ -131,7 +131,7 @@ var operationDate = (function(){
             })
 
             //添加品牌
-            sureBtn.click(function(e){
+            $('.btns').on('click','.sureBtn',function(e){
                 e.preventDefault();
                 //拿到所有值
                 var pBrandVal = $('.pBrand').val();
@@ -157,6 +157,59 @@ var operationDate = (function(){
                         }
                     })
                 }
+            })
+
+            //修改信息
+            phoneDateTbody.on('click','.td-update',function(){
+                //弹出修改窗口
+                $('.masking').fadeIn(300);
+                $('.addItem_box').fadeIn(300).find('h2').html('修改信息');
+                //更换确定按钮的class
+                $('.addItem_box').find('.sureBtn').removeClass('sureBtn').addClass('changeBtn');
+                //获取当前点击行的值
+                $('.pBrand').val($(this).parent().parent().children().eq(3).html());
+                _id = $(this).parent().parent().attr('_id');
+            })
+
+            //点击确定提交数据更新
+            $('.btns').on('click','.changeBtn',function(e){
+                // debugger;
+                e.preventDefault();
+                //拿到所有值
+                var pBrandVal = $('.pBrand').val();
+                var pFile = document.getElementById('pFile').files[0];
+                //发送数据到后台
+                if(pBrandVal && pFile){
+                    var obj = new FormData();
+                    obj.append('imgFile',pFile);
+                    obj.append('pBrand',pBrandVal);
+                    obj.append('_id',_id);
+    
+                    $.ajax({
+                        type : 'post',
+                        url : 'http://localhost:3000/api/updataBrand',
+                        data : obj,
+                        contentType : false,
+                        processData : false,
+                        success : function(res){
+                            if(res.code == 1){
+                                $('.cancelBtn').click();
+                                alert('修改成功');
+                                _this.getDate(currentPage,pageSize);
+                            }else{
+                                alert(res.msg);
+                            }
+                        }
+                    })
+                }else{
+                    alert('请输入完整');
+                }
+            })
+
+             //点击取消隐藏修改窗口
+             $('.cancelBtn').click(function(){
+                $('.masking').fadeOut(300);
+                $('.addItem_box').fadeOut(300);
             })
         }
     }
