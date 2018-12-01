@@ -157,7 +157,6 @@ var operationDate = (function(){
                         }
                     })
                 }
-                console.log(pBrandVal,pFile)
             })
         }
     }

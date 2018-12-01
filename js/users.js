@@ -2,7 +2,6 @@ $(function(){
     operationDate.init();
 })
 
-
 var operationDate = (function(){
     //分页ul
     var pageUl =  $(".pagination");

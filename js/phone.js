@@ -136,7 +136,7 @@ var operationDate = (function(){
             })
 
             //添加品牌
-            sureBtn.click(function(e){
+            $('.btns').on('click','.sureBtn',function(e){
                 e.preventDefault();
                 //拿到所有值
                 var pNameVal = $('.pName').val();
@@ -170,28 +170,71 @@ var operationDate = (function(){
                 }else{
                     alert('请输入完整');
                 }
-                console.log(pBrandVal,pFile)
             })
 
             //修改信息
-            /* this.phoneDate.on('click','.td-update',function(){
+            phoneDateTbody.on('click','.td-update',function(){
                 //弹出修改窗口
                 $('.masking').fadeIn(300);
                 $('.addItem_box').fadeIn(300).find('h2').html('修改信息');
+                //更换确定按钮的class
+                $('.addItem_box').find('.sureBtn').removeClass('sureBtn').addClass('changeBtn');
                 //获取当前点击行的值
                 $('.pName').val($(this).parent().parent().children().eq(2).html());
                 $('.pBrand').val($(this).parent().parent().children().eq(3).html());
                 $('.pPrice').val($(this).parent().parent().children().eq(4).html());
                 $('.pSecondPrice').val($(this).parent().parent().children().eq(5).html());
-                
-                //调用添加数据的方法更新当前数据
-                // _this.addPhone('http://localhost:3000/api/updataPhone','修改信息成功')
-                //点击取消隐藏修改窗口
-                $('.cancelBtn').click(function(){
-                    $('.masking').fadeOut(300);
-                    $('.addItem_box').fadeOut(300);
-                })
-            }) */
+                _id = $(this).parent().parent().attr('_id');
+            })
+
+            //点击确定提交数据更新
+            $('.btns').on('click','.changeBtn',function(e){
+                // debugger;
+                e.preventDefault();
+                //拿到所有值
+                var pNameVal = $('.pName').val();
+                var pBrandVal = $('.pBrand').val();
+                var pPriceVal = $('.pPrice').val();
+                var pSecondPriceVal = $('.pSecondPrice').val();
+                var pFile = document.getElementById('pFile').files[0];
+                console.log(pNameVal,pBrandVal,pPriceVal,pSecondPriceVal,pFile,_id);
+
+                //发送数据到后台
+                if(pNameVal && pBrandVal && pPriceVal && pSecondPriceVal && pFile){
+                    var obj = new FormData();
+                    obj.append('imgFile',pFile);
+                    obj.append('pName',pNameVal);
+                    obj.append('pBrand',pBrandVal);
+                    obj.append('pPrice',pPriceVal);
+                    obj.append('pSecondPrice',pSecondPriceVal);
+                    obj.append('_id',_id);
+    
+                    $.ajax({
+                        type : 'post',
+                        url : 'http://localhost:3000/api/updataPhone',
+                        data : obj,
+                        contentType : false,
+                        processData : false,
+                        success : function(res){
+                            if(res.code == 1){
+                                $('.cancelBtn').click();
+                                alert('修改成功');
+                                _this.getDate(currentPage,pageSize);
+                            }else{
+                                alert(res.msg);
+                            }
+                        }
+                    })
+                }else{
+                    alert('请输入完整');
+                }
+            })
+
+             //点击取消隐藏修改窗口
+             $('.cancelBtn').click(function(){
+                $('.masking').fadeOut(300);
+                $('.addItem_box').fadeOut(300);
+            })
         }
     }
 })()

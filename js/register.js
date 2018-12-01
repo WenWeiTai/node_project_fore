@@ -177,7 +177,7 @@ class RegRegister {
           isAdmin:  $("input[name=isAdmin]:checked").val()
         };
         $.post(
-          "http://localhost:3000/api/register",
+          "'http://localhost:3000/api/register",
           params,
           function(res) {
             if(res.code === 1){
