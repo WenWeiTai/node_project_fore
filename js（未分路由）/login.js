@@ -5,7 +5,7 @@ $(function () {
     $('.btn').click(function () {
         //判断用户名密码不为空
         if (valReg.test(username.val()) && valReg.test(password.val())) {
-            $.post('http://localhost:3000/users/login', {
+            $.post('http://localhost:3000/api/login', {
                 username: username.val(),
                 password: password.val()
             }, function (res) {

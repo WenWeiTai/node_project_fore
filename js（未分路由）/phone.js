@@ -10,9 +10,7 @@ var operationDate = (function(){
     var phoneDateTbody = $(".phoneDate");
     //分页第一个li
     var navFirstLi = $(".pagination").children("li").first("li"); 
-    //添加手机按钮
-    var addPhoneBtn = $('.addPhoneBtn');
-    //确定按钮
+    //添加手机确定按钮
     var sureBtn = $('.sureBtn');
     //当前页
     var currentPage = 1;
@@ -33,7 +31,7 @@ var operationDate = (function(){
         getDate(currentPage,pageSize){
             var _this = this;
             //请求数据
-            $.get("http://localhost:3000/brand/brandDate?page="+ currentPage + "&pageSize=" + pageSize, function (res) {
+            $.get("http://localhost:3000/api/phoneDate?page="+ currentPage + "&pageSize=" + pageSize, function (res) {
                 if (res.code == 1) {
                     //获取数据后渲染用户数据和分页
                     _this.setDate(res)
@@ -54,24 +52,31 @@ var operationDate = (function(){
             //渲染用户数据
             for (var i = 0; i < res.data.length; i++) {
                 userDatestr += `
-                <tr _id=${res.data[i]._id}>
-                    <th class="setTDLineH_brand" scope="row">${i + 1}</th>
-                    <td><img src="${res.data[i].imgSrc}" alt="iphone" /></td>
-                    <td class="setTDLineH_brand">${res.data[i].brand}</td>
-                    <td class="setTDLineH_brand">
-                        <a class="td-update" href="##">修改</a>&ensp;&ensp;<a
-                        class="td-del"
-                        href="##"
-                        >删除</a
-                        >
-                    </td>
-                </tr>
+                <tr _id="${res.data[i]._id}">    
+                <th class="setTDLineH" scope="row">${i + 1}</th>
+                <td>
+                    <img
+                    class="setSize"
+                    src="${res.data[i].imgSrc}"
+                    alt="iphoneX"
+                    />
+                </td>
+                <td class="setTDLineH">${res.data[i].model}</td>
+                <td class="setTDLineH">${res.data[i].brand}</td>
+                <td class="setTDLineH">${res.data[i].price}</td>
+                <td class="setTDLineH">${res.data[i].secondHand}</td>
+                <td class="setTDLineH">
+                    <a class="td-update" href="##">修改</a>&ensp;&ensp;<a
+                    class="td-del"
+                    href="##""
+                    >删除</a
+                    >
+                </td>
+            </tr>
                 `;
             }
             phoneDateTbody.html(userDatestr);
-            //管理员没有删除按钮
-            $('.del_hide').remove();
-
+            
             //====分页数据渲染
             //获取分页
             var liS =  $('.firstLi').siblings('li').not('.lastLi');
@@ -119,7 +124,7 @@ var operationDate = (function(){
                 _id = $(this).parent().parent().attr('_id');
                 //获取当前页
                 currentPage = pageUl.find('.active').index();
-                $.get('http://localhost:3000/brand/brandDelete',{_id : _id},function(res){
+                $.get('http://localhost:3000/api/phoneDelete',{_id : _id},function(res){
                     if(res.code == 1){
                         alert(res.msg);
                         //重新渲染数据
@@ -134,17 +139,23 @@ var operationDate = (function(){
             $('.btns').on('click','.sureBtn',function(e){
                 e.preventDefault();
                 //拿到所有值
+                var pNameVal = $('.pName').val();
                 var pBrandVal = $('.pBrand').val();
+                var pPriceVal = $('.pPrice').val();
+                var pSecondPriceVal = $('.pSecondPrice').val();
                 var pFile = document.getElementById('pFile').files[0];
 
-                if(pBrandVal && pFile){
+                if(pNameVal && pBrandVal && pPriceVal && pSecondPriceVal && pFile){
                     var obj = new FormData();
                     obj.append('imgFile',pFile);
+                    obj.append('pName',pNameVal);
                     obj.append('pBrand',pBrandVal);
+                    obj.append('pPrice',pPriceVal);
+                    obj.append('pSecondPrice',pSecondPriceVal);
     
                     $.ajax({
                         type : 'post',
-                        url : 'http://localhost:3000/brand/addbrand',
+                        url : 'http://localhost:3000/api/addPhone',
                         data : obj,
                         contentType : false,
                         processData : false,
@@ -156,6 +167,8 @@ var operationDate = (function(){
                             }
                         }
                     })
+                }else{
+                    alert('请输入完整');
                 }
             })
 
@@ -167,7 +180,10 @@ var operationDate = (function(){
                 //更换确定按钮的class
                 $('.addItem_box').find('.sureBtn').removeClass('sureBtn').addClass('changeBtn');
                 //获取当前点击行的值
+                $('.pName').val($(this).parent().parent().children().eq(2).html());
                 $('.pBrand').val($(this).parent().parent().children().eq(3).html());
+                $('.pPrice').val($(this).parent().parent().children().eq(4).html());
+                $('.pSecondPrice').val($(this).parent().parent().children().eq(5).html());
                 _id = $(this).parent().parent().attr('_id');
             })
 
@@ -176,18 +192,26 @@ var operationDate = (function(){
                 // debugger;
                 e.preventDefault();
                 //拿到所有值
+                var pNameVal = $('.pName').val();
                 var pBrandVal = $('.pBrand').val();
+                var pPriceVal = $('.pPrice').val();
+                var pSecondPriceVal = $('.pSecondPrice').val();
                 var pFile = document.getElementById('pFile').files[0];
+                console.log(pNameVal,pBrandVal,pPriceVal,pSecondPriceVal,pFile,_id);
+
                 //发送数据到后台
-                if(pBrandVal && pFile){
+                if(pNameVal && pBrandVal && pPriceVal && pSecondPriceVal && pFile){
                     var obj = new FormData();
                     obj.append('imgFile',pFile);
+                    obj.append('pName',pNameVal);
                     obj.append('pBrand',pBrandVal);
+                    obj.append('pPrice',pPriceVal);
+                    obj.append('pSecondPrice',pSecondPriceVal);
                     obj.append('_id',_id);
     
                     $.ajax({
                         type : 'post',
-                        url : 'http://localhost:3000/brand/updataBrand',
+                        url : 'http://localhost:3000/api/updataPhone',
                         data : obj,
                         contentType : false,
                         processData : false,

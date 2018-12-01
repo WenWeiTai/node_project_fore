@@ -32,7 +32,7 @@ var operationDate = (function(){
         getDate(currentPage,pageSize){
             var _this = this;
             //请求数据
-            $.get("http://localhost:3000/users/getUsersInfo?page="+ currentPage + "&pageSize=" + pageSize, function (res) {
+            $.get("http://localhost:3000/api/users?page="+ currentPage + "&pageSize=" + pageSize, function (res) {
                 if (res.code == 1) {
                     //获取数据后渲染用户数据和分页
                     _this.setDate(res)
@@ -100,7 +100,7 @@ var operationDate = (function(){
                     _this.getDate(currentPage,pageSize);
                 }else{
                     //有值做搜索请求
-                    $.get('http://localhost:3000/users/searchUsersInfo',{nickname : seachInput.val()},function(res){
+                    $.get('http://localhost:3000/api/search',{nickname : seachInput.val()},function(res){
                         _this.setDate(res)
                     })
                 }
@@ -130,7 +130,7 @@ var operationDate = (function(){
                 _id = $(this).parent().parent().attr('_id');
                 //获取当前页
                 currentPage = pageUl.find('.active').index();
-                $.get('http://localhost:3000/users/deleteUsersInfo',{_id : _id},function(res){
+                $.get('http://localhost:3000/api/delete',{_id : _id},function(res){
                     if(res.code == 1){
                         alert(res.msg);
                         //重新渲染数据

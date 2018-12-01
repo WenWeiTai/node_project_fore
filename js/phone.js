@@ -31,7 +31,7 @@ var operationDate = (function(){
         getDate(currentPage,pageSize){
             var _this = this;
             //请求数据
-            $.get("http://localhost:3000/api/phoneDate?page="+ currentPage + "&pageSize=" + pageSize, function (res) {
+            $.get("http://localhost:3000/phone/phoneDate?page="+ currentPage + "&pageSize=" + pageSize, function (res) {
                 if (res.code == 1) {
                     //获取数据后渲染用户数据和分页
                     _this.setDate(res)
@@ -124,7 +124,7 @@ var operationDate = (function(){
                 _id = $(this).parent().parent().attr('_id');
                 //获取当前页
                 currentPage = pageUl.find('.active').index();
-                $.get('http://localhost:3000/api/phoneDelete',{_id : _id},function(res){
+                $.get('http://localhost:3000/phone/phoneDelete',{_id : _id},function(res){
                     if(res.code == 1){
                         alert(res.msg);
                         //重新渲染数据
@@ -155,7 +155,7 @@ var operationDate = (function(){
     
                     $.ajax({
                         type : 'post',
-                        url : 'http://localhost:3000/api/addPhone',
+                        url : 'http://localhost:3000/phone/addPhone',
                         data : obj,
                         contentType : false,
                         processData : false,
@@ -211,7 +211,7 @@ var operationDate = (function(){
     
                     $.ajax({
                         type : 'post',
-                        url : 'http://localhost:3000/api/updataPhone',
+                        url : 'http://localhost:3000/phone/updataPhone',
                         data : obj,
                         contentType : false,
                         processData : false,
